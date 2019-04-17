@@ -156,6 +156,7 @@ class Waveform extends React.Component {
           gradientColors={this.props.gradientColors}
           peaks={this.props.peaks}
           width={this.state.waveWidth}
+          absmax={this.props.absmax}
           height={this.state.waveHeight}
         />
         <div
@@ -171,6 +172,7 @@ class Waveform extends React.Component {
             gradientColors={this.props.progressGradientColors}
             peaks={this.props.peaks}
             width={this.state.waveWidth}
+            absmax={this.props.absmax}
             height={this.state.waveHeight}
           />
         </div>

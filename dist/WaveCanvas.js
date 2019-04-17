@@ -47,18 +47,11 @@ var WaveCanvas = function (_React$Component) {
     };
 
     _this.drawBars = function (waveCanvasCtx, width, peaks) {
-      var params = {
-        fillParent: true,
-        height: _this.props.height,
-        normalize: true,
-        pixelRatio: _this.props.pixelRatio,
-        barWidth: _this.props.barWidth,
-        color: _this.props.color,
-        gradientColors: _this.props.gradientColors
+      var params = _this.props;
 
-        // Bar wave draws the bottom only as a reflection of the top,
-        // so we don't need negative values
-      };var hasMinVals = [].some.call(peaks, function (val) {
+      // Bar wave draws the bottom only as a reflection of the top,
+      // so we don't need negative values
+      var hasMinVals = [].some.call(peaks, function (val) {
         return val < 0;
       });
       if (hasMinVals) {
@@ -82,10 +75,7 @@ var WaveCanvas = function (_React$Component) {
       var gap = Math.max(params.pixelRatio, 2);
       var step = bar + gap;
 
-      var absmax = 1;
-      if (params.normalize) {
-        absmax = _this.absMax(peaks);
-      }
+      var absmax = params.absmax || _this.absMax(peaks);
 
       var scale = length / width;
 
@@ -115,16 +105,10 @@ var WaveCanvas = function (_React$Component) {
     };
 
     _this.drawWaves = function (waveCanvasCtx, width, peaks) {
-      var params = {
-        fillParent: true,
-        height: _this.props.height,
-        normalize: true,
-        pixelRatio: _this.props.pixelRatio,
-        color: _this.props.color,
-        gradientColors: _this.props.gradientColors
+      var params = _this.props;
 
-        // Support arrays without negative peaks
-      };var hasMinValues = [].some.call(peaks, function (val) {
+      // Support arrays without negative peaks
+      var hasMinValues = [].some.call(peaks, function (val) {
         return val < 0;
       });
       if (!hasMinValues) {
@@ -148,12 +132,7 @@ var WaveCanvas = function (_React$Component) {
         scale = width / length;
       }
 
-      var absmax = 1;
-      if (params.normalize) {
-        var max = _this.max(peaks);
-        var min = _this.min(peaks);
-        absmax = -min > max ? -min : max;
-      }
+      var absmax = params.absmax || _this.absMax(peaks);
 
       if (params.gradientColors) {
         var gradient = waveCanvasCtx.createLinearGradient(0, 0, width, 0);
@@ -283,5 +262,6 @@ var WaveCanvas = function (_React$Component) {
 WaveCanvas.defaultProps = {
   color: "ccc",
   width: 0,
-  pixelRatio: window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI };
+  pixelRatio: window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI,
+  fillParent: true };
 exports.default = WaveCanvas;

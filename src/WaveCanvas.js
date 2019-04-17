@@ -12,6 +12,7 @@ class WaveCanvas extends React.Component {
     width: 0,
     pixelRatio:
       window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI,
+    fillParent: true
   }
 
   // static propTypes = {
@@ -53,15 +54,7 @@ class WaveCanvas extends React.Component {
   }
 
   drawBars = (waveCanvasCtx, width, peaks) => {
-    const params = {
-      fillParent: true,
-      height: this.props.height,
-      normalize: true,
-      pixelRatio: this.props.pixelRatio,
-      barWidth: this.props.barWidth,
-      color: this.props.color,
-      gradientColors: this.props.gradientColors,
-    }
+    const params = this.props;
 
     // Bar wave draws the bottom only as a reflection of the top,
     // so we don't need negative values
@@ -88,10 +81,7 @@ class WaveCanvas extends React.Component {
     const gap = Math.max(params.pixelRatio, 2)
     const step = bar + gap
 
-    let absmax = 1
-    if (params.normalize) {
-      absmax = this.absMax(peaks)
-    }
+    const absmax = params.absmax || this.absMax(peaks)
 
     const scale = length / width
 
@@ -121,14 +111,7 @@ class WaveCanvas extends React.Component {
   }
 
   drawWaves = (waveCanvasCtx, width, peaks) => {
-    const params = {
-      fillParent: true,
-      height: this.props.height,
-      normalize: true,
-      pixelRatio: this.props.pixelRatio,
-      color: this.props.color,
-      gradientColors: this.props.gradientColors,
-    }
+    const params = this.props;
 
     // Support arrays without negative peaks
     const hasMinValues = [].some.call(peaks, (val) => val < 0)
@@ -153,12 +136,7 @@ class WaveCanvas extends React.Component {
       scale = width / length
     }
 
-    let absmax = 1
-    if (params.normalize) {
-      const max = this.max(peaks)
-      const min = this.min(peaks)
-      absmax = -min > max ? -min : max
-    }
+    const absmax = params.absmax || this.absMax(peaks)
 
     if (params.gradientColors) {
       const gradient = waveCanvasCtx.createLinearGradient(0, 0, width, 0)
